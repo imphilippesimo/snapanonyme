@@ -1,9 +1,12 @@
 package com.doranco.snapanonyme;
 
+import com.doranco.snapanonyme.application.ApplicationConfig;
+import com.doranco.snapanonyme.infrastructure.InfrastructureConfig;
+import com.doranco.snapanonyme.presentation.PresentationConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = {ApplicationConfig.class, InfrastructureConfig.class, PresentationConfig.class})
 public class SnapanonymeApplication {
 
 	public static void main(String[] args) {
