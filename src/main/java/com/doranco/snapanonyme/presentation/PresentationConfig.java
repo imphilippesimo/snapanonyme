@@ -2,6 +2,7 @@ package com.doranco.snapanonyme.presentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -12,6 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
+@Configuration
 @ComponentScan
 @EnableSwagger2
 public class PresentationConfig {
@@ -27,11 +29,11 @@ public class PresentationConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Health check API",
-                "This API helps Checking AXA Banque Microservices status",
+                "Snap'anoyme API",
+                "This API exposes core supplied snap'anonyme services",
                 "v1.0.0",
-                "Terms of service",
-                new Contact("Philippe SIMO", "https://www.malt.fr/profile/philippeguemkamsimo", "philippe.guemkamsimo@gmail.com"),
+                "Terms of services",
+                new Contact("Philippe GUEMKAM SIMO", "https://www.malt.fr/profile/philippeguemkamsimo", "philippe.guemkamsimo@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());

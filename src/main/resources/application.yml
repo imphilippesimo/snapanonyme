@@ -1,11 +1,12 @@
 spring:
   application:
     name: snapanonyme
-#  datasource:
-#    driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost/test
+  #  datasource:
+  #    driverClassName: com.mysql.jdbc.Driver
+  #    url: jdbc:mysql://localhost/test
   #Disabling autoconfigration for datasource
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
 server:
   port: 9000
