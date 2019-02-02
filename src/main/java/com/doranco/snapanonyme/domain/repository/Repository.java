@@ -1,4 +1,4 @@
-package com.doranco.snapanonyme.domain;
+package com.doranco.snapanonyme.domain.repository;
 
 import java.util.List;
 

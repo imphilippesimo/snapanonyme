@@ -1,4 +1,4 @@
-package com.doranco.snapanonyme.domain.domainModel;
+package com.doranco.snapanonyme.domain.model;
 
 public class Article {
 

@@ -1,0 +1,1 @@
+package com.doranco.snapanonyme.domain.repository;
