@@ -6,16 +6,16 @@ public class Edition {
 
     private int id;
     private User user;
-    private Article article;
+    private Snap snap;
     private Date date;
 
     public Edition() {
     }
 
-    public Edition(int id, User user, Article article, Date date) {
+    public Edition(int id, User user, Snap snap, Date date) {
         this.id = id;
         this.user = user;
-        this.article = article;
+        this.snap = snap;
         this.date = date;
     }
 
@@ -35,12 +35,12 @@ public class Edition {
         this.user = user;
     }
 
-    public Article getArticle() {
-        return article;
+    public Snap getSnap() {
+        return snap;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setSnap(Snap snap) {
+        this.snap = snap;
     }
 
     public Date getDate() {

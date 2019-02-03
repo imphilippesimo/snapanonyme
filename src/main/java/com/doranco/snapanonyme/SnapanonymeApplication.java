@@ -13,5 +13,7 @@ public class SnapanonymeApplication {
 		SpringApplication.run(SnapanonymeApplication.class, args);
 	}
 
+	//TODO Set database uri ,username and pwd dynamically via env var when starting the app
+
 }
 

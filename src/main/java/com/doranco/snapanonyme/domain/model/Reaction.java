@@ -5,11 +5,11 @@ import java.util.Date;
 public class Reaction {
 
     public enum ReactionType {
-        LIKE, LOVE, LAUGN, DISGUTED
+        LIKE, LOVE, LAUGH, DISGUSTED
     }
 
     private int id;
-    private Article article;
+    private Snap snap;
     private Comment comment;
     private User user;
     private Date date;
@@ -18,9 +18,9 @@ public class Reaction {
     public Reaction() {
     }
 
-    public Reaction(int id, Article article, Comment comment, User user, Date date, ReactionType reactionType) {
+    public Reaction(int id, Snap snap, Comment comment, User user, Date date, ReactionType reactionType) {
         this.id = id;
-        this.article = article;
+        this.snap = snap;
         this.comment = comment;
         this.user = user;
         this.date = date;
@@ -35,12 +35,12 @@ public class Reaction {
         this.id = id;
     }
 
-    public Article getArticle() {
-        return article;
+    public Snap getSnap() {
+        return snap;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setSnap(Snap snap) {
+        this.snap = snap;
     }
 
     public Comment getComment() {

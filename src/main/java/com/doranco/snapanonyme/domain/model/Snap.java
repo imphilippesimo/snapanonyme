@@ -1,13 +1,13 @@
 package com.doranco.snapanonyme.domain.model;
 
-public class Article {
+public class Snap {
 
     private int id;
     private boolean isVisible;
     private int reportsNumber;
-    private File file;
+    private Picture picture;
 
-    public Article() {
+    public Snap() {
     }
 
     public int getId() {
@@ -34,18 +34,18 @@ public class Article {
         this.reportsNumber = reportsNumber;
     }
 
-    public File getFile() {
-        return file;
+    public Picture getPicture() {
+        return picture;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 
-    public Article(int id, boolean isVisible, int reportsNumber, File file) {
+    public Snap(int id, boolean isVisible, int reportsNumber, Picture picture) {
         this.id = id;
         this.isVisible = isVisible;
         this.reportsNumber = reportsNumber;
-        this.file = file;
+        this.picture = picture;
     }
 }

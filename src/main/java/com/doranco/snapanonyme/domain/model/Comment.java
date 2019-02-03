@@ -3,16 +3,16 @@ package com.doranco.snapanonyme.domain.model;
 public class Comment {
 
     private int id;
-    private Article article;
+    private Snap snap;
     private String content;
     private Comment subComment;
 
     public Comment() {
     }
 
-    public Comment(int id, Article article, String content, Comment subComment) {
+    public Comment(int id, Snap snap, String content, Comment subComment) {
         this.id = id;
-        this.article = article;
+        this.snap = snap;
         this.content = content;
         this.subComment = subComment;
     }
@@ -25,12 +25,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Article getArticle() {
-        return article;
+    public Snap getSnap() {
+        return snap;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setSnap(Snap snap) {
+        this.snap = snap;
     }
 
     public String getContent() {

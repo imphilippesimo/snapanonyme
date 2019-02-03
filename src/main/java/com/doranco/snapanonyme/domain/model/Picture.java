@@ -1,16 +1,16 @@
 package com.doranco.snapanonyme.domain.model;
 
-public class File {
+public class Picture {
 
     private int id;
     private String url;
     private int size;
     private String mimeType;
 
-    public File() {
+    public Picture() {
     }
 
-    public File(int id, String url, int size, String mimeType) {
+    public Picture(int id, String url, int size, String mimeType) {
         this.id = id;
         this.url = url;
         this.size = size;
