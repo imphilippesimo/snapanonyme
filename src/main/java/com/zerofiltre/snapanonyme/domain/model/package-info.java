@@ -1,0 +1,1 @@
+package com.zerofiltre.snapanonyme.domain.model;

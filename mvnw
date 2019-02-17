@@ -1,11 +1,11 @@
 #!/bin/sh
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
-# or more contributor license agreements.  See the NOTICE picture
+# or more contributor license agreements.  See the NOTICE uploadedFile
 # distributed with this work for additional information
-# regarding copyright ownership.  The ASF licenses this picture
+# regarding copyright ownership.  The ASF licenses this uploadedFile
 # to you under the Apache License, Version 2.0 (the
-# "License"); you may not use this picture except in compliance
+# "License"); you may not use this uploadedFile except in compliance
 # with the License.  You may obtain a copy of the License at
 #
 #    http://www.apache.org/licenses/LICENSE-2.0
@@ -188,7 +188,7 @@ find_maven_basedir() {
   echo "${basedir}"
 }
 
-# concatenates all lines of a picture
+# concatenates all lines of a uploadedFile
 concat_lines() {
   if [ -f "$1" ]; then
     echo "$(tr -s '\n' ' ' < "$1")"

@@ -1,6 +1,17 @@
 spring:
   application:
     name: snapanonyme
+  ## MULTIPART (MultipartProperties)
+  # Enable multipart uploads
+  servlet:
+    multipart:
+      enabled: true
+      # Threshold after which files are written to disk.
+      file-size-threshold: 2KB
+      # Max file size.
+      max-file-size: 200MB
+      # Max Request Size
+      max-request-size: 215MB
 
   datasource:
     url: jdbc:mysql://localhost:3306/snapanonyme?createDatabaseIfNotExist=true
@@ -12,7 +23,15 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+
+  ## Hibernate Logging
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+
+
+
 
 
 server:

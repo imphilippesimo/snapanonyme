@@ -1,1 +1,0 @@
-package com.doranco.snapanonyme.domain.service;

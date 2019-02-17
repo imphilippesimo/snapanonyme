@@ -1,4 +1,4 @@
-# snap'anonyme
+# article'anonyme
 
 Social network backend app for publishing post anonymously and let it be commented,and get reactions from geographycally nearest people.
 
