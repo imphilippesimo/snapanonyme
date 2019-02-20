@@ -6,7 +6,11 @@ import com.zerofiltre.snapanonyme.application.Snaps.GetSnaps;
 import com.zerofiltre.snapanonyme.application.mapper.SnapDTOMapper;
 import com.zerofiltre.snapanonyme.domain.model.Location;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerofiltre.snapanonyme.domain.model.Snap;
 import com.zerofiltre.snapanonyme.presentation.dto.SnapDTO;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.tika.Tika;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +24,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.System.out;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,10 +60,17 @@ public class CreateSnapIntTests {
     private static final boolean DEFAULT_VISIBILITY_VALUE = true;
     private static final int DEFAULT_REPORTS_NUMBER = 0;
     private static final Instant DEFAULT_POSTED_ON = Instant.now();
-    private static final Location DEFAULT_LOCATION = new Location(48.8262423, 2.3460248999999997);
 
-    SnapDTO snap;
-    MockMultipartFile picture;
+    private static final Location DEFAULT_LOCATION = new Location(48.8262423, 2.3460248999999997);
+    private static final Location DEFAULT_LOCATION_1 = new Location(11.54301, 3.88575);
+    private static final Location DEFAULT_LOCATION_2 = new Location(11.54289, 3.88565);
+    private static final Location DEFAULT_LOCATION_3 = new Location(11.54284, 3.88547);
+    private static final Location DEFAULT_LOCATION_4 = new Location(11.54274, 3.88542);
+    private static final Location DEFAULT_LOCATION_5 = new Location(11.54267, 3.88536);
+    private static final Location DEFAULT_LOCATION_6 = new Location(11.54261, 3.88532);
+    List<Location> locations = new ArrayList<Location>(Arrays.asList(DEFAULT_LOCATION, DEFAULT_LOCATION_1, DEFAULT_LOCATION_2, DEFAULT_LOCATION_3, DEFAULT_LOCATION_3, DEFAULT_LOCATION_4, DEFAULT_LOCATION_5, DEFAULT_LOCATION_6));
+    List<SnapDTO> snapsDTOs = new ArrayList<SnapDTO>();
+    List<MockMultipartFile> pictures = new ArrayList<MockMultipartFile>();
 
     @Autowired
     GetSnaps snaps;
@@ -65,16 +84,25 @@ public class CreateSnapIntTests {
 
     @Before
     public void setUp() {
-        snap = new SnapDTO();
-        snap.setReportsNumber(DEFAULT_REPORTS_NUMBER);
-        snap.setVisible(DEFAULT_VISIBILITY_VALUE);
-        snap.setPostedOn(DEFAULT_POSTED_ON);
-        snap.setPostedAt(DEFAULT_LOCATION);
-        try {
-            picture = new MockMultipartFile("beach", classLoader.getResourceAsStream(pictureName));
-        } catch (IOException e) {
-            e.printStackTrace();
+        SnapDTO snap;
+        for (Location location : locations) {
+            snap = new SnapDTO();
+            snap.setReportsNumber(DEFAULT_REPORTS_NUMBER);
+            snap.setVisible(DEFAULT_VISIBILITY_VALUE);
+            snap.setPostedOn(DEFAULT_POSTED_ON);
+            snap.setPostedAt(location);
+            try {
+                InputStream stream = classLoader.getResourceAsStream("beach.jpg");
+                Tika tika = new Tika();
+                pictures.add(new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            snapsDTOs.add(snap);
+
         }
+
 
     }
 
@@ -83,22 +111,31 @@ public class CreateSnapIntTests {
     public void should_create_article() throws Exception {
 
         int databaseSizeBeforeCreate = snaps.all().size();
+        int i = 0;
 
-        mvcResult = mvc.perform(MockMvcRequestBuilders.multipart("/snaps")
-                .file(picture)
-                .content(TestUtil.convertObjectToJsonBytes(snap))
-                .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isCreated());
+        for (SnapDTO snapDTO : snapsDTOs) {
+            mvcResult = mvc.perform(MockMvcRequestBuilders.multipart("/snaps")
+                    .file("picture", pictures.get(i).getBytes())
+                    .param("longitude", String.valueOf(snapDTO.getPostedAt().getLongitude()))
+                    .param("latitude", String.valueOf(snapDTO.getPostedAt().getLatitude()))
+                    .contentType(MediaType.MULTIPART_FORM_DATA))
+                    .andExpect(status().isCreated());
+            i++;
+        }
 
         List<SnapDTO> dbSnaps = snaps.all();
 
-        Assertions.assertThat(dbSnaps.size()).isEqualTo(databaseSizeBeforeCreate + 1);
-        SnapDTO newlyCreatedSnap = dbSnaps.get(dbSnaps.size() - 1);
-        Assertions.assertThat(newlyCreatedSnap.getPicture()).isNotNull();
-        Assertions.assertThat(newlyCreatedSnap.getPicture().getId()).isNotNull();
-        Assertions.assertThat(newlyCreatedSnap.getPicture().getMimeType()).isEqualTo(DEFAULT_MIME_TYPE);
-        Assertions.assertThat(newlyCreatedSnap.getReportsNumber()).isEqualTo(DEFAULT_REPORTS_NUMBER);
-        Assertions.assertThat(newlyCreatedSnap.isVisible()).isTrue();
+        Assertions.assertThat(dbSnaps.size()).isEqualTo(databaseSizeBeforeCreate + snapsDTOs.size());
+        for (int j = 0; j < snapsDTOs.size(); j++) {
+            SnapDTO newlyCreatedSnap = dbSnaps.get(dbSnaps.size() - (j + 1));
+            Assertions.assertThat(newlyCreatedSnap.getPicture()).isNotNull();
+            Assertions.assertThat(newlyCreatedSnap.getPicture().getId()).isNotNull();
+            //TODO: valid names, and mime types, to do so register pass along all the multipart file ans not only the content
+            //Assertions.assertThat(newlyCreatedSnap.getPicture().getMimeType()).isEqualTo(DEFAULT_MIME_TYPE);
+            Assertions.assertThat(newlyCreatedSnap.getReportsNumber()).isEqualTo(DEFAULT_REPORTS_NUMBER);
+            Assertions.assertThat(newlyCreatedSnap.isVisible()).isTrue();
+        }
+
 
     }
 

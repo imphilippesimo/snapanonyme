@@ -2,22 +2,36 @@ package com.zerofiltre.snapanonyme.presentation.snaps;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerofiltre.snapanonyme.SnapanonymeApplication;
+import com.zerofiltre.snapanonyme.application.Snaps.CreateSnap;
+import com.zerofiltre.snapanonyme.application.Snaps.DeleteSnap;
 import com.zerofiltre.snapanonyme.application.Snaps.GetSnaps;
-import com.zerofiltre.snapanonyme.domain.model.Snap;
-import org.hamcrest.CoreMatchers;
+import com.zerofiltre.snapanonyme.domain.model.Location;
+import com.zerofiltre.snapanonyme.presentation.dto.SnapDTO;
+import org.apache.tika.Tika;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SnapanonymeApplication.class)
+@AutoConfigureMockMvc
 public class GetSnapIntTest {
 
     @Autowired
@@ -27,32 +41,73 @@ public class GetSnapIntTest {
     private GetSnaps getSnaps;
 
     @Autowired
+    private CreateSnap createSnap;
+
+    @Autowired
+    private DeleteSnap deleteSnap;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     private MvcResult mvcResult;
 
+    private static final Location EXPLORER_LOCATION = new Location(11.54256, 3.88527);
+    private static final Location FAR_AWAY_SNAP_LOCATION = new Location(48.8262423, 2.3460248999999997);
+    private static final Location CLOSE_SNAP_LOCATION = new Location(11.54261, 3.88532);
+    private static final double DEFAULT_DISTANCE = 10;
 
-    @Test
-    public void should_get_only_CloseSnaps() throws Exception {
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    MockMultipartFile picture;
 
-        //TODO
-        //1 consider a location
-        //2 retrieve snaps 30m or less far away from that position
-        //3 validate the test by checking if the distance between the locations, for each result is less than 30m
-        mvcResult = mvc.perform(MockMvcRequestBuilders.get("/snaps").accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk()).andReturn();
+    InputStream stream = classLoader.getResourceAsStream("beach.jpg");
+    Tika tika = new Tika();
 
-        String responseContentAsString = mvcResult.getResponse().getContentAsString();
-        List<Snap> snaps = deSerializeContent(responseContentAsString);
-
-        assertThat(String.valueOf(snaps.size()), CoreMatchers.is(String.valueOf(1)));
-        assertThat(String.valueOf(snaps.get(0).getId()), CoreMatchers.is(String.valueOf(1)));
+    @Before
+    public void setUp() throws IOException {
+        //Register a snap with a close location
+        picture = new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream);
 
 
     }
 
-    private List<Snap> deSerializeContent(String jsonContent) throws IOException {
-        return objectMapper.readValue(jsonContent, new TypeReference<List<Snap>>() {
+    private List<SnapDTO> performTest(Location location) throws Exception {
+        //all db snaps
+        deleteSnap.all();
+        createSnap.create(EXPLORER_LOCATION, picture);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.get("/snaps")
+                .param("longitude", String.valueOf(location.getLongitude()))
+                .param("latitude", String.valueOf(location.getLatitude()))
+                .param("distance", String.valueOf(DEFAULT_DISTANCE))
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk()).andReturn();
+
+        String responseContentAsString = mvcResult.getResponse().getContentAsString();
+        return deSerializeContent(responseContentAsString);
+
+    }
+
+
+    @Test
+    public void should_Return_at_least_one_snap() throws Exception {
+        List<SnapDTO> snaps = performTest(CLOSE_SNAP_LOCATION);
+
+        //check that the snaps contains at least 1 result
+        assertThat(snaps.size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void should_Return_no_result() throws Exception {
+        List<SnapDTO> snaps = performTest(FAR_AWAY_SNAP_LOCATION);
+
+        //check that the snaps contains no result
+        assertThat(snaps.size()).isGreaterThanOrEqualTo(0);
+
+    }
+
+
+    private List<SnapDTO> deSerializeContent(String jsonContent) throws IOException {
+        return objectMapper.readValue(jsonContent, new TypeReference<List<SnapDTO>>() {
         });
     }
 

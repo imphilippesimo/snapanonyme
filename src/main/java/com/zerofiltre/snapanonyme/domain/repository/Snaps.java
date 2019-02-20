@@ -1,5 +1,6 @@
 package com.zerofiltre.snapanonyme.domain.repository;
 
+import com.zerofiltre.snapanonyme.domain.model.Location;
 import com.zerofiltre.snapanonyme.domain.model.Snap;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface Snaps {
 
     public void delete(int id);
 
+    List<Snap> closest(Location location, double distanceAsMeters);
+
+    void deleteAll();
 }

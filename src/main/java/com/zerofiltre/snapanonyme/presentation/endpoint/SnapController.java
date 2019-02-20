@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static java.lang.System.out;
+
 @RestController
 public class SnapController {
 
@@ -30,24 +32,30 @@ public class SnapController {
 
     @RequestMapping(value = "/snaps", consumes = {"multipart/form-data"}, method = RequestMethod.POST)
 //    @Timed
-    public ResponseEntity<SnapDTO> createSnap(@RequestPart("longitude") @Valid String longitude,
-                                              @RequestPart("latitude") @Valid String latitude,
-                                              @RequestPart("picture") @Valid @NotNull @NotBlank MultipartFile uploadedFile) throws URISyntaxException, IOException {
+    public ResponseEntity<SnapDTO> createSnap(@RequestParam("longitude") @Valid String longitude,
+                                              @RequestParam("latitude") @Valid String latitude,
+                                              @RequestPart(value = "picture", required = false) MultipartFile uploadedFile) throws URISyntaxException, IOException {
 //        log.debug("REST request to save Travel : {}", travelDTO);
 //        if (Integer.valueOf(snap.getId()) != null) {
 //            throw new BadRequestAlertException("A new travel cannot already have an ID", ENTITY_NAME, "idexists");
 //        }
 
+        if (uploadedFile != null)
+            out.print(uploadedFile.toString());
         Location location = new Location(Double.valueOf(longitude), Double.valueOf(latitude));
         SnapDTO result = createSnap.create(location, uploadedFile);
         return ResponseEntity.created(new URI("/snaps/" + result.getId())).body(result);
     }
 
-    @GetMapping(value = "/snaps", consumes = {"multipart/form-data"})
-    public ResponseEntity<List<SnapDTO>> getAllSnaps(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double distanceAsMeters) {
+    @GetMapping(value = "/snaps")
+    public ResponseEntity<List<SnapDTO>> getAllSnaps(@RequestParam(value = "longitude") double longitude,
+                                                     @RequestParam(value = "latitude") double latitude,
+                                                     @RequestParam(value = "distance") double distanceAsMeters) {
 
         //TODO modify the getSnaps logic to align with geolocation computing
-        return ResponseEntity.ok(getSnaps.all());
+        Location location = new Location(longitude, latitude);
+
+        return ResponseEntity.ok(getSnaps.closest(location,distanceAsMeters));
     }
 
 
