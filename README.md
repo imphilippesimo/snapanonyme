@@ -14,9 +14,9 @@ Develop and do pull requests
 
 **Run the app on local machine**
 
-mvn spring-boot:run -Dspring-boot.run.profiles=<profile>
+mvn spring-boot:run -Dspring-boot.run.profiles=<<profile>>
   
-<profile> = dev,test,...
+<<profile>> = dev,test,...
  
 Exposed APIs: navigate to: http://localhost:9000/swagger-ui.html
  
