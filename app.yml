@@ -8,6 +8,7 @@ services:
       - SLEEP=10
       - JAVA_OPTS=-Xmx512m -Xms256m
       - SPRING_ACTIVE_PROFILES=prod
+
     ports:
       - 9000:9000
   snapanonyme-mysql:

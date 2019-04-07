@@ -1,6 +1,7 @@
 # Use an official java runtime as a parent image
 FROM openjdk:8-jre-alpine
 
+
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     SLEEP=0 \
