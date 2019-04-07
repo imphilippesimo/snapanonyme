@@ -1,0 +1,17 @@
+version: '2'
+services:
+  snapanonyme-app:
+    build:
+      context: .
+    image: snapanonyme
+#    environment:
+#      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+#      - SPRING_PROFILES_ACTIVE=prod
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://snapanonyme-mysql:3306/snapanonyme?useUnicode=true&characterEncoding=utf8&useSSL=false
+#      - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+    ports:
+      - 9000:9000
+  snapanonyme-mysql:
+    extends:
+      file: mysql.yml
+      service: snapanonyme-mysql

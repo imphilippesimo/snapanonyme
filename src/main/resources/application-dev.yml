@@ -14,9 +14,11 @@ spring:
       max-request-size: 215MB
 
   datasource:
-    url: jdbc:mysql://${SNAPANONYM_DB_HOST}:${SNAPANONYM_DB_PORT}/${SNAPANONYM_DB_NAME}?createDatabaseIfNotExist=true
-    username: ${SNAPANONYM_DB_USER}
-    password: ${SNAPANONYM_DB_PASSWORD}
+
+    url: jdbc:mysql://localhost:3306/snapanonyme?createDatabaseIfNotExist=true
+    username: snapanonyme
+    password: Banzai85$
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
