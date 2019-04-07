@@ -52,7 +52,7 @@ public class SnapController {
                                                      @RequestParam(value = "latitude") double latitude,
                                                      @RequestParam(value = "distance") double distanceAsMeters) {
 
-        //TODO modify the getSnaps logic to align with geolocation computing
+
         Location location = new Location(longitude, latitude);
 
         return ResponseEntity.ok(getSnaps.closest(location,distanceAsMeters));

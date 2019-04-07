@@ -1,0 +1,16 @@
+version: '2'
+services:
+  snapanonyme-app:
+    build:
+      context: .
+    image: snapanonyme
+    environment:
+      - SLEEP=10
+      - JAVA_OPTS=-Xmx512m -Xms256m
+      - SPRING_ACTIVE_PROFILES=prod
+    ports:
+      - 9000:9000
+  snapanonyme-mysql:
+    extends:
+      file: mysql.yml
+      service: snapanonyme-mysql
