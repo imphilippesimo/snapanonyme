@@ -12,11 +12,14 @@ import org.apache.tika.Tika;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -32,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SnapanonymeApplication.class)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class GetSnapIntTest {
 
     @Autowired
@@ -49,6 +53,8 @@ public class GetSnapIntTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private Logger logger = LoggerFactory.getLogger(GetSnapIntTest.class);
+
     private MvcResult mvcResult;
 
     private static final Location EXPLORER_LOCATION = new Location(11.54256, 3.88527);
@@ -64,8 +70,10 @@ public class GetSnapIntTest {
 
     @Before
     public void setUp() throws IOException {
+        logger.debug("Start Setting up the tests");
         //Register a snap with a close location
         picture = new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream);
+        logger.debug("End Setting up the tests");
 
 
     }

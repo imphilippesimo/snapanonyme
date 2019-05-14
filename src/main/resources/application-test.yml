@@ -14,10 +14,10 @@ spring:
       max-request-size: 215MB
 
   datasource:
-    #Set database uri ,username and pwd dynamically via env var when starting the app
-    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?createDatabaseIfNotExist=true
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
+
+    url: jdbc:mysql://localhost:3306/snapanonyme?createDatabaseIfNotExist=true
+    username: snapanonyme
+    password: Banzai85$
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -36,4 +36,4 @@ spring:
 
 
 server:
-  port: 5000
+  port: 9000
