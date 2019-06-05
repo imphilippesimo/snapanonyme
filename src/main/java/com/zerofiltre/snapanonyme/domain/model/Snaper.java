@@ -1,25 +1,32 @@
-package com.zerofiltre.snapanonyme.infrastructure.model;
+package com.zerofiltre.snapanonyme.domain.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
-
-@Entity
-public class User extends SuperClazz {
+public class Snaper {
+    private int id;
 
     private String userName;
     private String password;
     private String role;
 
-    @OneToMany
-    private List<Article> articles;
+    public Snaper() {
+    }
 
-    public User(int id, String userName, String password, String role, List<Article> articles) {
-        super(id);
+    public Snaper(int id, String userName, String password, String role) {
+        this.id = id;
         this.userName = userName;
         this.password = password;
         this.role = role;
-        this.articles = articles;
+    }
+
+    public Snaper(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -44,13 +51,5 @@ public class User extends SuperClazz {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
     }
 }

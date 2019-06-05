@@ -13,7 +13,7 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     SNAPANONYM_DB_PASSWORD=snapanonyme\
     SPRING_ACTIVE_PROFILES=prod
 
-# Add a snapanonyme user to run our application so that it doesn't need to run as root
+# Add a snapanonyme snaper to run our application so that it doesn't need to run as root
 RUN adduser -D -s /bin/sh snapanonyme
 
 # Set the current working directory to /home/snapanonyme
@@ -31,7 +31,7 @@ RUN sed -e 's/\r$//' entrypoint-dos.sh > entrypoint.sh
 #set the file as an executable and set snapanonyme as the owner
 RUN chmod 755 entrypoint.sh && chown snapanonyme:snapanonyme entrypoint.sh
 
-#set the user to use when running the image to snapanonyme
+#set the snaper to use when running the image to snapanonyme
 USER snapanonyme
 
 # Make port 9000 available to the world outside this container

@@ -19,6 +19,7 @@ import java.util.List;
 import static java.lang.System.out;
 
 @RestController
+@RequestMapping(value = "/user")
 public class SnapController {
 
     private CreateSnap createSnap;
