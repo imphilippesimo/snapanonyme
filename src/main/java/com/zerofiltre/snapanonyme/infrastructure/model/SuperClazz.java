@@ -12,6 +12,13 @@ public class SuperClazz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    public SuperClazz() {
+    }
+
+    public SuperClazz(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

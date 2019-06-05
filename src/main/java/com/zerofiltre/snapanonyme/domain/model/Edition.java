@@ -5,16 +5,16 @@ import java.util.Date;
 public class Edition {
 
     private int id;
-    private User user;
+    private Snaper snaper;
     private Snap snap;
     private Date date;
 
     public Edition() {
     }
 
-    public Edition(int id, User user, Snap snap, Date date) {
+    public Edition(int id, Snaper snaper, Snap snap, Date date) {
         this.id = id;
-        this.user = user;
+        this.snaper = snaper;
         this.snap = snap;
         this.date = date;
     }
@@ -27,12 +27,12 @@ public class Edition {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Snaper getSnaper() {
+        return snaper;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSnaper(Snaper snaper) {
+        this.snaper = snaper;
     }
 
     public Snap getSnap() {
