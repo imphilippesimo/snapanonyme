@@ -1,10 +1,22 @@
 package com.zerofiltre.snapanonyme.infrastructure.model;
 
+import org.hibernate.annotations.Filter;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
 @Entity
+@SqlResultSetMapping(
+        name = "ArticleMapping",
+        entities = @EntityResult(
+                entityClass = Article.class,
+                fields = {
+                        @FieldResult(name = "postedOn", column = "posted_on"),
+                        @FieldResult(name = "isVisible", column = "is_visible"),
+                        @FieldResult(name = "reportsNumber", column = "reports_number"),
+                        @FieldResult(name = "file", column = "file_id")}))
+
 public class Article extends SuperClazz {
 
     private boolean isVisible;

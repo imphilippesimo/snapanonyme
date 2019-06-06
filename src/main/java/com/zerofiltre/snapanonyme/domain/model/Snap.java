@@ -70,4 +70,16 @@ public class Snap {
         this.reportsNumber = reportsNumber;
         this.picture = picture;
     }
+
+    @Override
+    public String toString() {
+        return "Snap{" +
+                "id=" + id +
+                ", isVisible=" + isVisible +
+                ", reportsNumber=" + reportsNumber +
+                ", picture=" + picture +
+                ", postedOn=" + postedOn +
+                ", postedAt=" + postedAt +
+                '}';
+    }
 }

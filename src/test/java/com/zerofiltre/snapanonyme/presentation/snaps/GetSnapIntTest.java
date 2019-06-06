@@ -60,7 +60,7 @@ public class GetSnapIntTest {
     private static final Location EXPLORER_LOCATION = new Location(11.54256, 3.88527);
     private static final Location FAR_AWAY_SNAP_LOCATION = new Location(48.8262423, 2.3460248999999997);
     private static final Location CLOSE_SNAP_LOCATION = new Location(11.54261, 3.88532);
-    private static final double DEFAULT_DISTANCE = 10;
+    private static final double DEFAULT_DISTANCE = 30;
 
     ClassLoader classLoader = this.getClass().getClassLoader();
     MockMultipartFile picture;
