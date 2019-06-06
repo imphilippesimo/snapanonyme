@@ -100,6 +100,7 @@ public class GetSnapIntTest {
     public void should_Return_at_least_one_snap() throws Exception {
         List<SnapDTO> snaps = performTest(CLOSE_SNAP_LOCATION);
 
+
         //check that the snaps contains at least 1 result
         assertThat(snaps.size()).isGreaterThanOrEqualTo(1);
     }
@@ -107,6 +108,7 @@ public class GetSnapIntTest {
     @Test
     public void should_Return_no_result() throws Exception {
         List<SnapDTO> snaps = performTest(FAR_AWAY_SNAP_LOCATION);
+
 
         //check that the snaps contains no result
         assertThat(snaps.size()).isGreaterThanOrEqualTo(0);

@@ -5,6 +5,7 @@ import com.zerofiltre.snapanonyme.domain.model.Snap;
 import com.zerofiltre.snapanonyme.domain.repository.Snaps;
 import com.zerofiltre.snapanonyme.infrastructure.mapper.SnapArticleMapper;
 import com.zerofiltre.snapanonyme.infrastructure.model.Article;
+import com.zerofiltre.snapanonyme.infrastructure.model.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import javax.persistence.ConstructorResult;
 import javax.persistence.SqlResultSetMapping;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Repository
@@ -49,7 +51,7 @@ public class JPAArticleRepository extends JPARepository implements Snaps {
     }
 
     @Override
-    public List<Snap> closest(Location location, double distanceAsMeters) {
+    public List<Snap> closest(Location location, double distanceAsMiles) {
         /**
          * TODO
          * 1) write the query to load the closest snaps
@@ -57,29 +59,36 @@ public class JPAArticleRepository extends JPARepository implements Snaps {
          * 3) call it
          */
 
-        String query = "SELECT SQRT(\n" +
-                "    POW(69.1 * (article.latitude - :current_latitude), 2) +\n" +
-                "    POW(69.1 * (:current_longitude - article.longitude) * COS(article.latitude / 57.3), 2)) AS distance,\n" +
-                "article.id\n" +
-                "FROM article HAVING distance <= :max_distance ORDER BY distance;";
+        List<Snap> snaps = new ArrayList<>();
+        String query = "SELECT \n" +
+                "    POW(69.1 * (a.latitude - :current_latitude), 2) +\n" +
+                "    POW(69.1 * (:current_longitude - a.longitude) * COS(a.latitude / 57.3), 2) AS distance,\n" +
+                "a.id,a.posted_on,a.is_visible,a.reports_number,a.file_id,a.longitude,a.latitude,f.id as fileId,f.mime_type\n" +
+                "FROM article a JOIN file f on a.file_id = f.id HAVING distance <= :max_distance ORDER BY distance;";
+
+//        List<Object[]> results = entityManager.createNativeQuery(query, Article.class)
+//                .setParameter("current_latitude", location.getLatitude())
+//                .setParameter("current_longitude", location.getLongitude())
+//                .setParameter("max_distance", distanceAsMeters).getResultList();
+//
+//        results.stream().forEach(record -> {
+//            Article article = (Article) record[0];
+//            File file = (File) record[1];
+//            article.setFile(file);
+//            snaps.add(mapper.toSnap(article));
+//        });
+
+        //return snaps;
 
 
-        List<Snap> results = new ArrayList<Snap>();
-
-        List<Object[]> articlesIds = entityManager.createNativeQuery(query)
+////        "SELECT b.id, b.title, b.author_id, b.version, a.id as authorId, a.firstName, a.lastName, a.version as authorVersion FROM Book b JOIN Author a ON b.author_id = a.id"
+        snaps = mapper.toSnaps(entityManager.createNativeQuery(query, Article.class)
                 .setParameter("current_latitude", location.getLatitude())
                 .setParameter("current_longitude", location.getLongitude())
-                .setParameter("max_distance", distanceAsMeters).getResultList();
+                .setParameter("max_distance", Math.pow(distanceAsMiles, 2)).getResultList());
+        logger.info(snaps.toString());
 
-
-
-        for (Object[] record :
-                articlesIds) {
-            results.add(getById((Integer) record[1]));
-
-        }
-        logger.debug(String.valueOf(results.size()));
-        return results;
+        return snaps;
 
 
     }

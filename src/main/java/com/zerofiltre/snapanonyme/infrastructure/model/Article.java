@@ -7,15 +7,28 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@SqlResultSetMapping(
-        name = "ArticleMapping",
-        entities = @EntityResult(
-                entityClass = Article.class,
-                fields = {
-                        @FieldResult(name = "postedOn", column = "posted_on"),
-                        @FieldResult(name = "isVisible", column = "is_visible"),
-                        @FieldResult(name = "reportsNumber", column = "reports_number"),
-                        @FieldResult(name = "file", column = "file_id")}))
+
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "ArticleFileMapping",
+                entities = {
+                        @EntityResult(
+                                entityClass = Article.class,
+                                fields = {
+                                        @FieldResult(name = "postedOn", column = "posted_on"),
+                                        @FieldResult(name = "isVisible", column = "is_visible"),
+                                        @FieldResult(name = "reportsNumber", column = "reports_number"),
+                                        @FieldResult(name = "file", column = "file_id")}),
+                        @EntityResult(
+                                entityClass = File.class,
+                                fields = {
+                                        @FieldResult(name = "id", column = "fileId"),
+                                        @FieldResult(name = "mimeType", column = "mime_type")
+                                }
+                        )
+                }
+        )
+})
 
 public class Article extends SuperClazz {
 
@@ -24,10 +37,10 @@ public class Article extends SuperClazz {
     @OneToOne(cascade = CascadeType.PERSIST)
     private File file;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
     private List<Reaction> reactions;
 
-    @OneToMany(mappedBy = "commented",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "commented", cascade = CascadeType.PERSIST)
     private List<Comment> comments;
     private Instant postedOn;
     private double longitude;
