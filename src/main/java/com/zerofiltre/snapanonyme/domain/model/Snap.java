@@ -10,6 +10,7 @@ public class Snap {
     private Picture picture;
     private Instant postedOn;
     private Location postedAt;
+    private double milesAway;
 
 
 
@@ -81,5 +82,13 @@ public class Snap {
                 ", postedOn=" + postedOn +
                 ", postedAt=" + postedAt +
                 '}';
+    }
+
+    public double getMilesAway() {
+        return milesAway;
+    }
+
+    public void setMilesAway(double milesAway) {
+        this.milesAway = milesAway;
     }
 }

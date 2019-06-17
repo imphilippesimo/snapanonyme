@@ -5,17 +5,12 @@ import com.zerofiltre.snapanonyme.domain.model.Snap;
 import com.zerofiltre.snapanonyme.domain.repository.Snaps;
 import com.zerofiltre.snapanonyme.infrastructure.mapper.SnapArticleMapper;
 import com.zerofiltre.snapanonyme.infrastructure.model.Article;
-import com.zerofiltre.snapanonyme.infrastructure.model.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.SqlResultSetMapping;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Repository
@@ -88,7 +83,10 @@ public class JPAArticleRepository extends JPARepository implements Snaps {
                 .setParameter("max_distance", Math.pow(distanceAsMiles, 2)).getResultList());
         logger.info(snaps.toString());
 
-        return snaps;
+        return snaps.stream().map(snap -> {
+            snap.setMilesAway(LocationUtils.distanceAsMiles(snap.getPostedAt(), location, 0, 0));
+            return snap;
+        }).collect(Collectors.toList());
 
 
     }

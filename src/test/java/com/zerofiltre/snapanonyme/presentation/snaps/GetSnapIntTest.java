@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,10 +59,14 @@ public class GetSnapIntTest {
 
     private MvcResult mvcResult;
 
-    private static final Location EXPLORER_LOCATION = new Location(11.54256, 3.88527);
-    private static final Location FAR_AWAY_SNAP_LOCATION = new Location(48.8262423, 2.3460248999999997);
-    private static final Location CLOSE_SNAP_LOCATION = new Location(11.54261, 3.88532);
-    private static final double DEFAULT_DISTANCE = 30;
+    private static final Location CLOSE_EXPLORER_LOCATION = new Location(11.54256, 3.88527);
+    private static final Location FAR_AWAY_EXPLORER_LOCATION = new Location(48.8262423, 2.3460248999999997);
+    private static final Location SNAP_LOCATION = new Location(11.54261, 3.88532);
+    private static final Location SNAP_LOCATION_1 = new Location(11.542564630508423, 3.884057606009377);
+    private static final Location SNAP_LOCATION_2 = new Location(11.540064811706543, 3.8786412666255767);
+    private static final Location SNAP_LOCATION_3 = new Location(11.540236473083496, 3.8737601089033076);
+    private static final List<Location> LOCATIONS_TO_TEST = new ArrayList<>(Arrays.asList(SNAP_LOCATION, SNAP_LOCATION_1, SNAP_LOCATION_2, SNAP_LOCATION_3));
+    private static final double DEFAULT_DISTANCE = 1;
 
     ClassLoader classLoader = this.getClass().getClassLoader();
     MockMultipartFile picture;
@@ -73,15 +79,18 @@ public class GetSnapIntTest {
         logger.debug("Start Setting up the tests");
         //Register a snap with a close location
         picture = new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream);
+        //all db snaps
+        deleteSnap.all();
+        for (Location location : LOCATIONS_TO_TEST) {
+            createSnap.create(location, picture);
+        }
+
         logger.debug("End Setting up the tests");
 
 
     }
 
     private List<SnapDTO> performTest(Location location) throws Exception {
-        //all db snaps
-        deleteSnap.all();
-        createSnap.create(EXPLORER_LOCATION, picture);
 
         mvcResult = mvc.perform(MockMvcRequestBuilders.get("/snaps")
                 .param("longitude", String.valueOf(location.getLongitude()))
@@ -98,18 +107,21 @@ public class GetSnapIntTest {
 
     @Test
     public void should_Return_at_least_one_snap() throws Exception {
-        List<SnapDTO> snaps = performTest(CLOSE_SNAP_LOCATION);
-
+        List<SnapDTO> snaps = new ArrayList<SnapDTO>();
+        snaps.addAll(performTest(CLOSE_EXPLORER_LOCATION));
 
         //check that the snaps contains at least 1 result
+        for (SnapDTO snap :
+                snaps) {
+            logger.debug("The snap " + snap.getId() + " has been posted " + snap.getMilesAway()*1609.344 + " meters from here");
+            assertThat(snap.getMilesAway()).isLessThanOrEqualTo(DEFAULT_DISTANCE);
+        }
         assertThat(snaps.size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
     public void should_Return_no_result() throws Exception {
-        List<SnapDTO> snaps = performTest(FAR_AWAY_SNAP_LOCATION);
-
-
+        List<SnapDTO> snaps = performTest(FAR_AWAY_EXPLORER_LOCATION);
         //check that the snaps contains no result
         assertThat(snaps.size()).isGreaterThanOrEqualTo(0);
 

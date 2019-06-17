@@ -28,9 +28,9 @@ public class GetSnaps {
         return mapper.snapsToSnapDTOs(snaps.all());
     }
 
-    public List<SnapDTO> closest(Location location, double distanceAsMeters) {
+    public List<SnapDTO> closest(Location location, double distanceAsMiles) {
         List<SnapDTO> snapDTOs = new ArrayList<SnapDTO>();
-        return mapper.snapsToSnapDTOs(snaps.closest(location,distanceAsMeters));
+        return mapper.snapsToSnapDTOs(snaps.closest(location,distanceAsMiles));
 
 
     }

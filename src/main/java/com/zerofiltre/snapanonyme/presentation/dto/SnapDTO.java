@@ -2,18 +2,17 @@ package com.zerofiltre.snapanonyme.presentation.dto;
 
 import com.zerofiltre.snapanonyme.domain.model.Location;
 
-import javax.validation.constraints.NotBlank;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.time.Instant;
 
 
 public class SnapDTO {
 
     private int id;
-    private boolean isVisible =true;
-    private int reportsNumber =0;
+    private boolean isVisible = true;
+    private int reportsNumber = 0;
     private PictureDTO picture;
     private Instant postedOn;
+    private double milesAway;
     private Location postedAt;
 
     public SnapDTO() {
@@ -57,6 +56,14 @@ public class SnapDTO {
 
     public void setPostedOn(Instant postedOn) {
         this.postedOn = postedOn;
+    }
+
+    public double getMilesAway() {
+        return milesAway;
+    }
+
+    public void setMilesAway(double milesAway) {
+        this.milesAway = milesAway;
     }
 
     public Location getPostedAt() {
