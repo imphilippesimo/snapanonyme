@@ -2,11 +2,13 @@ version: '2'
 services:
 
   sonarqube:
-#    build:
-#      context: sonarqube/
-#    ports:
-#      - 9000:9000
-#    container_name: sonarqube
+
+  #    build:
+  #      context: sonarqube/
+  #    ports:
+  #      - 9000:9000
+  #    container_name: sonarqube
+
   jenkins:
     build:
       context: jenkins/
@@ -19,8 +21,8 @@ services:
     volumes:
       - /tmp/jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-#    depends_on:
-#      - sonarqube
+  #    depends_on:
+  #      - sonarqube
   snapanonyme-app:
     build:
       context: .
