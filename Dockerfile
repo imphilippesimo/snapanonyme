@@ -4,6 +4,7 @@ FROM openjdk:8-jre-alpine
 
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
+    SLEEP=10\
     JAVA_OPTS="-Xmx512m -Xms256m"\
     SNAPANONYM_DB_HOST=127.0.0.1\
     SNAPANONYM_DB_PORT=3306\
@@ -33,8 +34,8 @@ RUN chmod 755 entrypoint.sh && chown snapanonyme:snapanonyme entrypoint.sh
 #set the user to use when running the image to snapanonyme
 USER snapanonyme
 
-# Make port 9000 available to the world outside this container
-EXPOSE 9000
+# Make port 9010 available to the world outside this container
+EXPOSE 9010
 
 
 ENTRYPOINT ["./entrypoint.sh"]
