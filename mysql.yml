@@ -1,8 +1,7 @@
 version: '2'
 services:
   snapanonyme-mysql:
-    image: mysql
-    # set default mysql data, change as needed at run time
+    image: mysql:5.7.20
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=snapanonyme
@@ -10,7 +9,7 @@ services:
       - MYSQL_DATABASE=snapanonyme
     ports:
       - 3306:3306
-    command: --default-authentication-plugin=mysql_native_password
+    command:  mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
   adminer:
     image: adminer
     restart: always
