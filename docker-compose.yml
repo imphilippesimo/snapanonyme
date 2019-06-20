@@ -31,6 +31,8 @@ services:
       - 9010:9000
     depends_on:
       - snapanonyme-mysql
+    environment:
+      - SLEEP=60
   snapanonyme-mysql:
     extends:
       file: mysql.yml

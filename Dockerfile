@@ -6,7 +6,7 @@ FROM openjdk:8-jre-alpine
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     SLEEP=10\
     JAVA_OPTS="-Xmx512m -Xms256m"\
-    SNAPANONYM_DB_HOST=127.0.0.1\
+    SNAPANONYM_DB_HOST=snapanonyme_snapanonyme-mysql_1\
     SNAPANONYM_DB_PORT=3306\
     SNAPANONYM_DB_NAME=snapanonyme\
     SNAPANONYM_DB_USER=snapanonyme\
