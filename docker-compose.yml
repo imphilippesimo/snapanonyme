@@ -28,7 +28,7 @@ services:
       context: .
     image: snapanonyme
     ports:
-      - 9010:9000
+      - 9010:9010
     depends_on:
       - snapanonyme-mysql
     environment:
