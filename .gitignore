@@ -1,5 +1,6 @@
 /target/
 /logs/
+/misc/
 ### STS ###
 .apt_generated
 .classpath
