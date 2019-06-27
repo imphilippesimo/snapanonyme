@@ -23,18 +23,41 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   #    depends_on:
   #      - sonarqube
-  snapanonyme-app:
+    networks:
+      - webnet
+
+  mysql:
+    image: mysql:5.7.20
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=snapanonyme
+      - MYSQL_PASSWORD=snapanonyme
+      - MYSQL_DATABASE=snapanonyme
+    ports:
+      - 3306:3306
+    command:  mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    networks:
+      - webnet
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - webnet
+
+  app:
     build:
       context: .
     image: snapanonyme
     ports:
       - 9010:9010
     depends_on:
-      - snapanonyme-mysql
-    environment:
-      - SLEEP=60
-  snapanonyme-mysql:
-    extends:
-      file: mysql.yml
-      service: snapanonyme-mysql
+      - mysql
+    networks:
+      - webnet
+networks:
+  webnet:
+
+
 

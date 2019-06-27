@@ -1,6 +1,6 @@
 version: '2'
 services:
-  snapanonyme-mysql:
+  mysql:
     image: mysql:5.7.20
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -14,7 +14,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8082:8080
     depends_on:
-      - snapanonyme-mysql
+      - mysql
 
