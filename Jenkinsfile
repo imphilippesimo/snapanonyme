@@ -62,5 +62,5 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 def runApp(containerName, tag, dockerHubUser, httpPortEx,httpPortIn){
     sh "docker pull $dockerHubUser/$containerName"
     sh "docker run --rm -p $httpPortEx:$httpPortIn --name $containerName $dockerHubUser/$containerName:$tag"
-    echo "Application started on port: ${httpPort} (http)"
+    echo "Application started on port: ${httpPortEx} (http)"
 }

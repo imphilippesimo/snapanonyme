@@ -1,6 +1,6 @@
 # Use an official java runtime as a parent image
 FROM openjdk:8-jre-alpine
-FROM maven:3-alpine
+#FROM maven:3-alpine
 
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
@@ -17,17 +17,17 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
 RUN adduser -D -s /bin/sh snapanonyme
 
 
-COPY pom.xml /home/snapanonyme
+#COPY pom.xml /home/snapanonyme
 
-COPY src/ /home/snapanonyme/src
+#COPY src/ /home/snapanonyme/src
 
 # Set the current working directory to /home/snapanonyme
 WORKDIR /home/snapanonyme
 
-RUN mvn clean install -Dmaven.test.skip=true
+#RUN mvn clean install -Dmaven.test.skip=true
 
 #copy the app to be deployed in the container
-#ADD target/snapanonyme.jar snapanonyme.jar
+ADD target/snapanonyme.jar snapanonyme.jar
 
 #create a file entrypoint-dos.sh and put the project entrypoint.sh content in it
 ADD entrypoint.sh entrypoint-dos.sh

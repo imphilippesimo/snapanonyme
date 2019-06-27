@@ -46,16 +46,16 @@ services:
     networks:
       - webnet
 
-  app:
-    build:
-      context: .
-    image: snapanonyme
-    ports:
-      - 9010:9010
-    depends_on:
-      - mysql
-    networks:
-      - webnet
+ # app:
+  #  build:
+   #   context: .
+   # image: snapanonyme
+   # ports:
+    #  - 9010:9010
+    #depends_on:
+     # - mysql
+    #networks:
+     # - webnet
 networks:
   webnet:
 
