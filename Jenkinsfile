@@ -1,4 +1,4 @@
-def CONTAINER_NAME="jenkins-pipeline"
+def CONTAINER_NAME="snapanonyme"
 def CONTAINER_TAG="latest"
 def DOCKER_HUB_USER="imzerofiltre"
 def HTTP_PORT_EX="8090"
@@ -61,6 +61,6 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 
 def runApp(containerName, tag, dockerHubUser, httpPortEx,httpPortIn){
     sh "docker pull $dockerHubUser/$containerName"
-    sh "docker run -d --rm -p $httpPortEx:$httpPortIn --name $containerName $dockerHubUser/$containerName:$tag"
+    sh "docker run --rm -p $httpPortEx:$httpPortIn --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
 }
