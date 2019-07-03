@@ -1,8 +1,10 @@
 package com.zerofiltre.snapanonyme.presentation;
 
+import com.zerofiltre.snapanonyme.presentation.security.JwtConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,6 +19,12 @@ import java.util.Collections;
 @ComponentScan
 @EnableSwagger2
 public class PresentationConfig {
+
+    @Bean
+    public JwtConfig jwtConfig() {
+        return new JwtConfig();
+    }
+
     @Bean
     public Docket restApi() {
         return new Docket(DocumentationType.SWAGGER_2)

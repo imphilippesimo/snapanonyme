@@ -2,6 +2,7 @@ package com.zerofiltre.snapanonyme.application.Snaper;
 
 import com.zerofiltre.snapanonyme.domain.model.Snaper;
 import com.zerofiltre.snapanonyme.domain.repository.Snapers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,26 +20,23 @@ import java.util.List;
 public class GetSnapers implements UserDetailsService {
 
     private Snapers snapers;
-    private BCryptPasswordEncoder encoder;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public GetSnapers(Snapers snapers, BCryptPasswordEncoder encoder) {
+
+    public GetSnapers(Snapers snapers) {
         this.snapers = snapers;
-        this.encoder = encoder;
     }
-
-
-
 
 
     // hard coding the mockUsers. All passwords must be encoded.
     final List<Snaper> mockUsers = Arrays.asList(
-            new Snaper(1, "omar", encoder.encode("12345"), "USER"),
-            new Snaper(2, "admin", encoder.encode("12345"), "ADMIN")
+            new Snaper(1, "omar", passwordEncoder.encode("12345"), "USER"),
+            new Snaper(2, "admin", passwordEncoder.encode("12345"), "ADMIN")
     );
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //TODO set up user management system and stop using dump users
+        //TODO set up user management system and stop using dump users, use snapers to retrieve users
         //User user = (User) entityManager.createQuery("Select s from " + User.class.getSimpleName() + " s where s.userName = " + username).getSingleResult();
         for (Snaper user : mockUsers) {
             if (user.getUserName().equals(username)) {
