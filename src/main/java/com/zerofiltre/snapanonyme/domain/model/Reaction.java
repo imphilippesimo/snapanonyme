@@ -11,18 +11,18 @@ public class Reaction {
     private int id;
     private Snap snap;
     private Comment comment;
-    private User user;
+    private Snaper snaper;
     private Date date;
     private ReactionType reactionType;
 
     public Reaction() {
     }
 
-    public Reaction(int id, Snap snap, Comment comment, User user, Date date, ReactionType reactionType) {
+    public Reaction(int id, Snap snap, Comment comment, Snaper snaper, Date date, ReactionType reactionType) {
         this.id = id;
         this.snap = snap;
         this.comment = comment;
-        this.user = user;
+        this.snaper = snaper;
         this.date = date;
         this.reactionType = reactionType;
     }
@@ -51,12 +51,12 @@ public class Reaction {
         this.comment = comment;
     }
 
-    public User getUser() {
-        return user;
+    public Snaper getSnaper() {
+        return snaper;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSnaper(Snaper snaper) {
+        this.snaper = snaper;
     }
 
     public Date getDate() {

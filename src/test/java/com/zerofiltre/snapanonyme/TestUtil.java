@@ -1,28 +1,46 @@
 package com.zerofiltre.snapanonyme;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.zerofiltre.snapanonyme.infrastructure.model.User;
+import com.zerofiltre.snapanonyme.presentation.dto.UserDTO;
+import com.zerofiltre.snapanonyme.presentation.security.JwtConfig;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 
+import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Utility class for testing REST controllers.
  */
 public class TestUtil {
 
-    /** MediaType for JSON UTF8 */
+    /**
+     * MediaType for JSON UTF8
+     */
+
+    static Logger logger = LoggerFactory.getLogger(TestUtil.class);
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
@@ -30,8 +48,7 @@ public class TestUtil {
     /**
      * Convert an object to JSON byte array.
      *
-     * @param object
-     *            the object to convert
+     * @param object the object to convert
      * @return the JSON byte array
      * @throws IOException
      */
@@ -83,7 +100,7 @@ public class TestUtil {
                 return true;
             } catch (DateTimeParseException e) {
                 mismatchDescription.appendText("was ").appendValue(item)
-                    .appendText(", which could not be parsed as a ZonedDateTime");
+                        .appendText(", which could not be parsed as a ZonedDateTime");
                 return false;
             }
 
@@ -97,6 +114,7 @@ public class TestUtil {
 
     /**
      * Creates a matcher that matches when the examined string reprensents the same instant as the reference datetime
+     *
      * @param date the reference datetime against which the examined string is checked
      */
     public static ZonedDateTimeMatcher sameInstant(ZonedDateTime date) {
@@ -124,6 +142,7 @@ public class TestUtil {
 
     /**
      * Create a FormattingConversionService which use ISO date format, instead of the localized one.
+     *
      * @return the FormattingConversionService
      */
     public static FormattingConversionService createFormattingConversionService() {
@@ -132,5 +151,41 @@ public class TestUtil {
         registrar.setUseIsoFormat(true);
         registrar.registerFormatters(dfcs);
         return dfcs;
+    }
+
+    public static MvcResult connect(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) {
+        String url = "/auth";
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = null;
+        try {
+            requestJson = ow.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            //building the request body failed
+            logger.warn("building the request body failed", e);
+        }
+        MvcResult mvcResult = null;
+        try {
+            mvcResult = mvc.perform(post(url).contentType(APPLICATION_JSON_UTF8)
+                    .content(requestJson))
+                    .andReturn();
+        } catch (Exception e) {
+            //if an exception occurs, the authHeader will be null
+            logger.warn("Failed to preform connection the request, an empty header will be returned!", e);
+        }
+        return mvcResult;
+
+
+    }
+
+    public static String connectAndReturnToken(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) {
+
+        String jwtoken = null;
+        MockHttpServletResponse response = connect(user, mvc, jwtConfig).getResponse();
+        //if the authentication fail , the authHeader sill be null
+        jwtoken = response.getHeader(jwtConfig.getHeader());
+        return jwtoken;
+
     }
 }

@@ -1,15 +1,11 @@
 package com.zerofiltre.snapanonyme.presentation.snaps;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerofiltre.snapanonyme.SnapanonymeApplication;
-import com.zerofiltre.snapanonyme.TestUtil;
 import com.zerofiltre.snapanonyme.application.Snaps.GetSnaps;
 import com.zerofiltre.snapanonyme.application.mapper.SnapDTOMapper;
 import com.zerofiltre.snapanonyme.domain.model.Location;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerofiltre.snapanonyme.domain.model.Snap;
 import com.zerofiltre.snapanonyme.presentation.dto.SnapDTO;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.Tika;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -25,20 +21,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.System.out;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)

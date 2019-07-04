@@ -48,7 +48,6 @@ public class JPAArticleRepository extends JPARepository implements Snaps {
     @Override
     public List<Snap> closest(Location location, double distanceAsMiles) {
         /**
-         * TODO
          * 1) write the query to load the closest snaps
          * 2) create query with entity manager
          * 3) call it
