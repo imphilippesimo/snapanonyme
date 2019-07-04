@@ -106,7 +106,7 @@ public class CreateSnapIntTests {
         int i = 0;
 
         for (SnapDTO snapDTO : snapsDTOs) {
-            mvcResult = mvc.perform(MockMvcRequestBuilders.multipart("/snaps")
+            mvcResult = mvc.perform(MockMvcRequestBuilders.multipart("/public/snaps")
                     .file("picture", pictures.get(i).getBytes())
                     .param("longitude", String.valueOf(snapDTO.getPostedAt().getLongitude()))
                     .param("latitude", String.valueOf(snapDTO.getPostedAt().getLatitude()))

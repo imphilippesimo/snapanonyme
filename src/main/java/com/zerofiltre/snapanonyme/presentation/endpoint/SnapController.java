@@ -31,7 +31,7 @@ public class SnapController {
 
 
 
-    @PostMapping(value = "/snaps",consumes = {"multipart/form-data"})
+    @PostMapping(value = "/public/snaps",consumes = {"multipart/form-data"})
 //    @Timed
     public ResponseEntity<SnapDTO> createSnap(@RequestParam("longitude") @Valid String longitude,
                                               @RequestParam("latitude") @Valid String latitude,
@@ -48,7 +48,7 @@ public class SnapController {
         return ResponseEntity.created(new URI("/snaps/" + result.getId())).body(result);
     }
 
-    @GetMapping(value = "/snaps")
+    @GetMapping(value = "/public/snaps")
     public ResponseEntity<List<SnapDTO>> getAllSnaps(@RequestParam(value = "longitude") double longitude,
                                                      @RequestParam(value = "latitude") double latitude,
                                                      @RequestParam(value = "distance") double distanceAsMeters) {

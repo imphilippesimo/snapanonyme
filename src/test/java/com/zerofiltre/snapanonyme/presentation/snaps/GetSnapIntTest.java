@@ -92,7 +92,7 @@ public class GetSnapIntTest {
 
     private List<SnapDTO> performTest(Location location) throws Exception {
 
-        mvcResult = mvc.perform(MockMvcRequestBuilders.get("/snaps")
+        mvcResult = mvc.perform(MockMvcRequestBuilders.get("/public/snaps")
                 .param("longitude", String.valueOf(location.getLongitude()))
                 .param("latitude", String.valueOf(location.getLatitude()))
                 .param("distance", String.valueOf(DEFAULT_DISTANCE))
