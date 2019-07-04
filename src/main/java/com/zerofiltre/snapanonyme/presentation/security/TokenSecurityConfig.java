@@ -46,19 +46,18 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeRequests()
-                //allow all request accessing the "auth" authenticatino endpoint
+                //allow all request accessing the "auth" authentication endpoint
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
 
                 //allow all public access
                 .antMatchers("/public/**").permitAll()
 
+                //must be an authenticated user or admin if trying to access users endpoints
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+
                 //must be an admin authenticated user if trying to access admin endpoints
                 .antMatchers("/admin/**").hasRole("ADMIN")
-
-                //must be an authenticated user if trying to access users endpoints
-                .antMatchers("/user/**").hasRole("USER")
-
 
                 //any other request must be authenticated
                 .anyRequest().authenticated();
