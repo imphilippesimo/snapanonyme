@@ -181,11 +181,11 @@ public class TestUtil {
 
     public static String connectAndReturnToken(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) {
 
-        String jwtoken = null;
+        String jwtToken;
         MockHttpServletResponse response = connect(user, mvc, jwtConfig).getResponse();
         //if the authentication fail , the authHeader sill be null
-        jwtoken = response.getHeader(jwtConfig.getHeader());
-        return jwtoken;
+        jwtToken = response.getHeader(jwtConfig.getHeader());
+        return jwtToken;
 
     }
 }
