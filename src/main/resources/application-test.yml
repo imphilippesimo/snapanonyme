@@ -19,6 +19,19 @@ spring:
   #    username: snapanonyme
   #    password: Banzai85$
 
+  #  datasource:
+  #    url: jdbc:h2:mem:testdb
+  #    driverClassName: org.h2.Driver
+  #    username: sa
+  #    password: password
+  #
+  #  jpa:
+  #    database-platform: org.hibernate.dialect.H2Dialect
+  #    show-sql: true
+  #    generate-ddl: true
+  #    hibernate:
+  #      ddl-auto: update
+
   datasource:
     url: jdbc:mysql://${SNAPANONYM_DB_HOST}:${SNAPANONYM_DB_PORT}/${SNAPANONYM_DB_NAME}?createDatabaseIfNotExist=true
     username: ${SNAPANONYM_DB_USER}
