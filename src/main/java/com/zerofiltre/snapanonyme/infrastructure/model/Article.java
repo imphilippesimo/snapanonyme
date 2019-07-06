@@ -34,13 +34,13 @@ public class Article extends SuperClazz {
 
     private boolean isVisible;
     private int reportsNumber;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private File file;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Reaction> reactions;
 
-    @OneToMany(mappedBy = "commented", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "commented", cascade = CascadeType.ALL)
     private List<Comment> comments;
     private Instant postedOn;
     private double longitude;
