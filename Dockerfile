@@ -5,7 +5,7 @@ FROM openjdk:8-jre-alpine
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     SLEEP=10\
-#    JAVA_OPTS="-Xmx512m -Xms256m"\
+    JAVA_OPTS="-Xmx512m -Xms256m"\
     SNAPANONYM_DB_HOST=172.31.81.47\
     SNAPANONYM_DB_PORT=3307\
     SNAPANONYM_DB_NAME=snapanonyme\

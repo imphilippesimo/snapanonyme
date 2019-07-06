@@ -3,7 +3,6 @@ package com.zerofiltre.snapanonyme.presentation.snaps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerofiltre.snapanonyme.SnapanonymeApplication;
 import com.zerofiltre.snapanonyme.application.Snaps.GetSnaps;
-import com.zerofiltre.snapanonyme.application.mapper.SnapDTOMapper;
 import com.zerofiltre.snapanonyme.domain.model.Location;
 import com.zerofiltre.snapanonyme.presentation.dto.SnapDTO;
 import org.apache.tika.Tika;
@@ -56,19 +55,19 @@ public class CreateSnapIntTests {
     private static final Location DEFAULT_LOCATION = new Location(48.8262423, 2.3460248999999997);
     private static final Location DEFAULT_LOCATION_1 = new Location(11.54301, 3.88575);
     private static final Location DEFAULT_LOCATION_2 = new Location(11.54289, 3.88565);
-    private static final Location DEFAULT_LOCATION_3 = new Location(11.54284, 3.88547);
-    private static final Location DEFAULT_LOCATION_4 = new Location(11.54274, 3.88542);
-    private static final Location DEFAULT_LOCATION_5 = new Location(11.54267, 3.88536);
+    //    private static final Location DEFAULT_LOCATION_3 = new Location(11.54284, 3.88547);
+//    private static final Location DEFAULT_LOCATION_4 = new Location(11.54274, 3.88542);
+//    private static final Location DEFAULT_LOCATION_5 = new Location(11.54267, 3.88536);
     private static final Location DEFAULT_LOCATION_6 = new Location(11.54261, 3.88532);
-    List<Location> locations = new ArrayList<Location>(Arrays.asList(DEFAULT_LOCATION, DEFAULT_LOCATION_1, DEFAULT_LOCATION_2, DEFAULT_LOCATION_3, DEFAULT_LOCATION_3, DEFAULT_LOCATION_4, DEFAULT_LOCATION_5, DEFAULT_LOCATION_6));
+    List<Location> locations = new ArrayList<Location>(Arrays.asList(DEFAULT_LOCATION, DEFAULT_LOCATION_1, DEFAULT_LOCATION_2,
+            //DEFAULT_LOCATION_3, DEFAULT_LOCATION_4, DEFAULT_LOCATION_5,
+            DEFAULT_LOCATION_6));
     List<SnapDTO> snapsDTOs = new ArrayList<SnapDTO>();
     List<MockMultipartFile> pictures = new ArrayList<MockMultipartFile>();
 
     @Autowired
     GetSnaps snaps;
 
-    @Autowired
-    SnapDTOMapper mapper;
 
     ClassLoader classLoader = getClass().getClassLoader();
 
