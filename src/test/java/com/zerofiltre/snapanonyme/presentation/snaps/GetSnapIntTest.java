@@ -71,14 +71,14 @@ public class GetSnapIntTest {
     ClassLoader classLoader = this.getClass().getClassLoader();
     MockMultipartFile picture;
 
-    InputStream stream = classLoader.getResourceAsStream("beach.jpg");
+    InputStream stream = classLoader.getResourceAsStream("boy.png");
     Tika tika = new Tika();
 
     @Before
     public void setUp() throws IOException {
         logger.debug("Start Setting up the tests");
         //Register a snap with a close location
-        picture = new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream);
+        picture = new MockMultipartFile("boy", "boy.png", tika.detect(stream), stream);
         //all db snaps
         deleteSnap.all();
         for (Location location : LOCATIONS_TO_TEST) {

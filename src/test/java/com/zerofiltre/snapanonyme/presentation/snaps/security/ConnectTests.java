@@ -1,9 +1,5 @@
 package com.zerofiltre.snapanonyme.presentation.snaps.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zerofiltre.snapanonyme.SnapanonymeApplication;
 import com.zerofiltre.snapanonyme.presentation.dto.UserDTO;
 import com.zerofiltre.snapanonyme.presentation.security.JwtConfig;
@@ -15,14 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static com.zerofiltre.snapanonyme.TestUtil.APPLICATION_JSON_UTF8;
-import static com.zerofiltre.snapanonyme.TestUtil.connectAndReturnToken;
+import static com.zerofiltre.snapanonyme.TestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,7 +46,7 @@ public class ConnectTests {
     private UserDTO user, admin, unknown;
     private MvcResult mvcResult;
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    String authHeader;
+    String token;
 
     @Before
     public void setUp() {
@@ -79,18 +73,22 @@ public class ConnectTests {
     @Test
     public void shouldGenerateTheToken() throws Exception {
 
-        authHeader = connectAndReturnToken(user, mvc, jwtConfig);
-        logger.info("The returned header is: \n" + authHeader);
-        assertThat(authHeader).isNotBlank();
-        assertThat(authHeader).startsWith(jwtConfig.getPrefix());
+        connect(user, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
+
+        logger.info("The returned header is: \n" + token);
+        assertThat(token).isNotNull();
+        assertThat(token).isNotBlank();
+        assertThat(token).startsWith(jwtConfig.getPrefix());
 
     }
 
 
     @Test
-    public void shouldNotGenerateToken() {
-        authHeader = connectAndReturnToken(unknown, mvc, jwtConfig);
-        assertThat(authHeader).isNull();
+    public void shouldNotGenerateToken() throws Exception {
+        connect(unknown, mvc, jwtConfig).andExpect(status().isUnauthorized());
 
     }
 

@@ -18,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static com.zerofiltre.snapanonyme.TestUtil.connect;
+import static com.zerofiltre.snapanonyme.TestUtil.extractToken;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -97,7 +99,10 @@ public class SecuredAPIIntTests {
     //Connect with "USER" role credentials and access "/user" role APIs, it has to be ok!
     @Test
     public void shouldAccessUserAPIWithUserRoleConnected() throws Exception {
-        token = TestUtil.connectAndReturnToken(user, mvc, jwtConfig);
+        connect(user, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
         mvcResult = mvc.perform(get("/user").header(jwtConfig.getHeader(), token)).andExpect(status().isOk()).andReturn();
         response = mvcResult.getResponse();
         assertThat(response.getContentAsString()).isEqualToIgnoringCase(USER_API_RESPONSE_CONTENT);
@@ -107,7 +112,10 @@ public class SecuredAPIIntTests {
     //Connect with "USER" role credentials and access "/admin" role APIs, it has to fail!
     @Test
     public void shouldNotAccessAdminAPIWithUserRoleConnected() throws Exception {
-        token = TestUtil.connectAndReturnToken(user, mvc, jwtConfig);
+        connect(user, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
         mvcResult = mvc.perform(get("/admin").header(jwtConfig.getHeader(), token)).andExpect(status().isForbidden()).andReturn();
 
 
@@ -116,7 +124,10 @@ public class SecuredAPIIntTests {
     //Connect with "ADMIN" role credentials and access "/admin" role APIs, it has to be ok!
     @Test
     public void shouldAccessAdminAPIWithAdminRoleConnected() throws Exception {
-        token = TestUtil.connectAndReturnToken(admin, mvc, jwtConfig);
+        connect(admin, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
         mvcResult = mvc.perform(get("/admin").header(jwtConfig.getHeader(), token)).andExpect(status().isOk()).andReturn();
         response = mvcResult.getResponse();
         assertThat(response.getContentAsString()).isEqualToIgnoringCase(ADMIN_API_RESPONSE_CONTENT);
@@ -126,7 +137,10 @@ public class SecuredAPIIntTests {
     //Connect with "ADMIN" role credentials and access "/user" role APIs, it has to be ok!
     @Test
     public void shouldAccessUserAPIWithAdminRoleConnected() throws Exception {
-        token = TestUtil.connectAndReturnToken(admin, mvc, jwtConfig);
+        connect(admin, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
         mvcResult = mvc.perform(get("/user").header(jwtConfig.getHeader(), token)).andExpect(status().isOk()).andReturn();
         response = mvcResult.getResponse();
         assertThat(response.getContentAsString()).isEqualToIgnoringCase(USER_API_RESPONSE_CONTENT);
@@ -136,7 +150,10 @@ public class SecuredAPIIntTests {
 
     @Test
     public void shouldAccessPublicAPIWithAdminRoleConnected() throws Exception {
-        token = TestUtil.connectAndReturnToken(admin, mvc, jwtConfig);
+        connect(admin, mvc, jwtConfig).andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    token = extractToken(mvcResult.getResponse(), jwtConfig);
+                });
         mvcResult = mvc.perform(get("/public").header(jwtConfig.getHeader(), token)).andExpect(status().isOk()).andReturn();
         response = mvcResult.getResponse();
         assertThat(response.getContentAsString()).isEqualToIgnoringCase(PUBLIC_API_RESPONSE_CONTENT);

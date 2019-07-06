@@ -72,7 +72,7 @@ public class CreateSnapIntTests {
 
     ClassLoader classLoader = getClass().getClassLoader();
 
-    private static final String pictureName = "beach.jpg";
+    private static final String pictureName = "boy.png";
 
     @Before
     public void setUp() {
@@ -84,9 +84,9 @@ public class CreateSnapIntTests {
             snap.setPostedOn(DEFAULT_POSTED_ON);
             snap.setPostedAt(location);
             try {
-                InputStream stream = classLoader.getResourceAsStream("beach.jpg");
+                InputStream stream = classLoader.getResourceAsStream("boy.png");
                 Tika tika = new Tika();
-                pictures.add(new MockMultipartFile("beach", "beach.jpg", tika.detect(stream), stream));
+                pictures.add(new MockMultipartFile("boy", "boy.png", tika.detect(stream), stream));
 
             } catch (IOException e) {
                 e.printStackTrace();

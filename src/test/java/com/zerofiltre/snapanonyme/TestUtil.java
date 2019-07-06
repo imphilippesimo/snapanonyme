@@ -1,12 +1,10 @@
 package com.zerofiltre.snapanonyme;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.zerofiltre.snapanonyme.infrastructure.model.User;
 import com.zerofiltre.snapanonyme.presentation.dto.UserDTO;
 import com.zerofiltre.snapanonyme.presentation.security.JwtConfig;
 import org.hamcrest.Description;
@@ -19,14 +17,14 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -153,39 +151,36 @@ public class TestUtil {
         return dfcs;
     }
 
-    public static MvcResult connect(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) {
+    public static ResultActions connect(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) throws Exception {
         String url = "/auth";
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = null;
-        try {
-            requestJson = ow.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            //building the request body failed
-            logger.warn("building the request body failed", e);
-        }
-        MvcResult mvcResult = null;
-        try {
-            mvcResult = mvc.perform(post(url).contentType(APPLICATION_JSON_UTF8)
-                    .content(requestJson))
-                    .andReturn();
-        } catch (Exception e) {
-            //if an exception occurs, the authHeader will be null
-            logger.warn("Failed to preform connection the request, an empty header will be returned!", e);
-        }
+        String requestJson = ow.writeValueAsString(user);
+        ResultActions mvcResult = mvc.perform(post(url).contentType(APPLICATION_JSON_UTF8).content(requestJson));
         return mvcResult;
-
-
     }
 
-    public static String connectAndReturnToken(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) {
+//    public static String connectAndReturnToken(UserDTO user, MockMvc mvc, JwtConfig jwtConfig) throws Exception {
+//        final AtomicReference<String> jwtToken = new AtomicReference<>();
+//        connect(user, mvc, jwtConfig)
+//                .andExpect(status().isOk())
+//                .andDo(mvcResult -> {
+//                    MockHttpServletResponse response = mvcResult.getResponse();
+//                    if (response != null) {
+//                        jwtToken.set(response.getHeader(jwtConfig.getHeader()));
+//                    }
+//                });
+//
+//        return jwtToken.get();
+//
+//    }
 
-        String jwtToken;
-        MockHttpServletResponse response = connect(user, mvc, jwtConfig).getResponse();
-        //if the authentication fail , the authHeader sill be null
-        jwtToken = response.getHeader(jwtConfig.getHeader());
-        return jwtToken;
+    public static String extractToken(MockHttpServletResponse response, JwtConfig jwtConfig) {
 
+        if (response != null) {
+            return response.getHeader(jwtConfig.getHeader());
+        }
+        return null;
     }
 }
