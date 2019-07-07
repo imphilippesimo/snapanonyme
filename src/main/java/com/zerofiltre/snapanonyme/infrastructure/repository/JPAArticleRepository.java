@@ -54,11 +54,7 @@ public class JPAArticleRepository extends JPARepository implements Snaps {
          */
 
         List<Snap> snaps = new ArrayList<>();
-        String query = "SELECT \n" +
-                "    POW(69.1 * (a.latitude - :current_latitude), 2) +\n" +
-                "    POW(69.1 * (:current_longitude - a.longitude) * COS(a.latitude / 57.3), 2) AS distance,\n" +
-                "a.id,a.posted_on,a.is_visible,a.reports_number,a.file_id,a.longitude,a.latitude,f.id as fileId,f.mime_type\n" +
-                "FROM article a JOIN file f on a.file_id = f.id HAVING distance <= :max_distance ORDER BY distance;";
+        String query = "SELECT POWER(69.1 * (a.latitude - :current_latitude), 2) + POWER(69.1 * (:current_longitude - a.longitude) * COS(a.latitude / 57.3), 2) AS distance,a.id,a.posted_on,a.is_visible,a.reports_number,a.file_id,a.longitude,a.latitude,f.id as fileId,f.mime_type FROM article a JOIN file f on a.file_id = f.id  GROUP BY a.id HAVING distance <= :max_distance ORDER BY distance;";
 
 //        List<Object[]> results = entityManager.createNativeQuery(query, Article.class)
 //                .setParameter("current_latitude", location.getLatitude())

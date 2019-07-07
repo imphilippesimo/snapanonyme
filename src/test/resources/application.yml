@@ -13,12 +13,6 @@ spring:
       # Max Request Size
       max-request-size: 215MB
 
-    #  datasource:
-
-    #    url: jdbc:mysql://localhost:3306/snapanonyme?createDatabaseIfNotExist=true
-    #    username: snapanonyme
-    #    password: Banzai85$
-
     datasource:
       url: jdbc:h2:mem:testdb
       driverClassName: org.h2.Driver
@@ -32,17 +26,17 @@ spring:
       hibernate:
         ddl-auto: update
 
-  #  datasource:
-  #    url: jdbc:mysql://${SNAPANONYM_DB_HOST}:${SNAPANONYM_DB_PORT}/${SNAPANONYM_DB_NAME}?createDatabaseIfNotExist=true
-  #    username: ${SNAPANONYM_DB_USER}
-  #    password: ${SNAPANONYM_DB_PASSWORD}
+  #    datasource:
+  #          url: jdbc:mysql://${SNAPANONYM_DB_HOST}:${SNAPANONYM_DB_PORT}/${SNAPANONYM_DB_NAME}?createDatabaseIfNotExist=true
+  #          username: ${SNAPANONYM_DB_USER}
+  #          password: ${SNAPANONYM_DB_PASSWORD}
   #
-  #  jpa:
-  #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  #    show-sql: true
-  #    generate-ddl: true
-  #    hibernate:
-  #      ddl-auto: update
+  #    jpa:
+  #        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #        show-sql: true
+  #        generate-ddl: true
+  #        hibernate:
+  #          ddl-auto: update
 
   ## Hibernate Logging
   logging:
