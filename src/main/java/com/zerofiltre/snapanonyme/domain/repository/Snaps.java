@@ -19,7 +19,7 @@ public interface Snaps {
 
     public void delete(int id);
 
-    List<Snap> closest(Location location, double distanceAsMeters);
+    List<Snap> closest(Location location, double distanceAsMiles);
 
     void deleteAll();
 }

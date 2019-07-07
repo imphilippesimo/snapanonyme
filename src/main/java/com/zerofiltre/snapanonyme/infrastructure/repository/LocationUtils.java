@@ -4,7 +4,7 @@ import com.zerofiltre.snapanonyme.domain.model.Location;
 
 public class LocationUtils {
 
-    public static double distanceAsMeters(Location origin, Location destination, double el1, double el2) {
+    private static double distanceAsMeters(Location origin, Location destination, double el1, double el2) {
 
         final int R = 6371; // Radius of the earth
 

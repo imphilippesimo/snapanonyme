@@ -51,12 +51,12 @@ public class SnapController {
     @GetMapping(value = "/public/snaps")
     public ResponseEntity<List<SnapDTO>> getAllSnaps(@RequestParam(value = "longitude") double longitude,
                                                      @RequestParam(value = "latitude") double latitude,
-                                                     @RequestParam(value = "distance") double distanceAsMeters) {
+                                                     @RequestParam(value = "distance") double distanceAsMiles) {
 
 
         Location location = new Location(longitude, latitude);
 
-        return ResponseEntity.ok(getSnaps.closest(location,distanceAsMeters));
+        return ResponseEntity.ok(getSnaps.closest(location,distanceAsMiles));
     }
 
     @GetMapping("/public")
