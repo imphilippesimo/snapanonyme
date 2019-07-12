@@ -6,7 +6,7 @@ ENV SNAPANONYM_DB_HOST=34.205.157.14\
     SNAPANONYM_DB_PORT=3307\
     SNAPANONYM_DB_NAME=snapanonyme\
     SNAPANONYM_DB_USER=snapanonyme\
-    SNAPANONYM_DB_PASSWORD=snapanonyme
+    SNAPANONYM_DB_PASSWORD=snapanonyme\
     KEY_STORE=keystore
 
 RUN mkdir /keystore
