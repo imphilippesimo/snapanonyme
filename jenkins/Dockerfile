@@ -7,8 +7,8 @@ ENV SNAPANONYM_DB_HOST=34.205.157.14\
     SNAPANONYM_DB_NAME=snapanonyme\
     SNAPANONYM_DB_USER=snapanonyme\
     SNAPANONYM_DB_PASSWORD=snapanonyme\
-    KEY_STORE=keystore
+    KEY_STORE=~/keystore
 
-RUN mkdir /keystore
+RUN mkdir -p ~/keystore
 #The file api-6321041036636787156-617186-2030f42a00bb.json must be present at the same level of this Dockerfile
 ADD api-6321041036636787156-617186-2030f42a00bb.json  /keystore/key.json
