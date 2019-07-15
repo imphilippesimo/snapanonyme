@@ -9,6 +9,8 @@ ENV SNAPANONYM_DB_HOST=35.174.133.79\
     SNAPANONYM_DB_PASSWORD=snapanonyme\
     KEY_STORE=~/keystore
 
+RUN apt-get update && apt-get install -y libltdl7 && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p ~/keystore
 #The file api-6321041036636787156-617186-2030f42a00bb.json must be present at the same level of this Dockerfile
 ADD api-6321041036636787156-617186-2030f42a00bb.json  /keystore/key.json
