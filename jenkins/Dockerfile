@@ -6,7 +6,7 @@ ENV SNAPANONYM_DB_HOST=35.174.133.79\
     SNAPANONYM_DB_PORT=3307\
     SNAPANONYM_DB_NAME=snapanonyme\
     SNAPANONYM_DB_USER=snapanonyme\
-    SNAPANONYM_DB_PASSWORD=snapanonyme\
+    SNAPANONYM_DB_PASSWORD=snapanonyme
 #    KEY_STORE=~/keystore
 
 USER root
