@@ -8,8 +8,8 @@ node {
 
     stage('Initialize'){
         //def dockerHome = tool 'myDocker'
-        //def mavenHome  = tool 'myMaven'
-        //env.PATH = "${mavenHome}/bin:${env.PATH}"
+        def mavenHome  = tool 'myMaven'
+        env.PATH = "${mavenHome}/bin:${env.PATH}"
     }
 
     stage('Checkout') {
