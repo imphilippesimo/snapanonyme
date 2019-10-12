@@ -46,6 +46,17 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeRequests()
+                //allow swagger
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
+                //error paths
+                .antMatchers("/error/**").permitAll()
+                //actuator paths
+                .antMatchers("/actuator/**").permitAll()
                 //allow all request accessing the "auth" authentication endpoint
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
