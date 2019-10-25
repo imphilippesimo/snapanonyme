@@ -4,6 +4,7 @@ import com.zerofiltre.snapanonyme.application.Snaps.CreateSnap;
 import com.zerofiltre.snapanonyme.application.Snaps.GetSnaps;
 import com.zerofiltre.snapanonyme.domain.model.Location;
 import com.zerofiltre.snapanonyme.presentation.dto.SnapDTO;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class SnapController {
     @GetMapping(value = "/public/snaps")
     public ResponseEntity<List<SnapDTO>> getAllSnaps(@RequestParam(value = "longitude") double longitude,
                                                      @RequestParam(value = "latitude") double latitude,
-                                                     @RequestParam(value = "distance") double distanceAsMiles) {
+                                                     @ApiParam("the scope to scan as miles") @RequestParam(value = "distanceAsMiles") double distanceAsMiles) {
 
 
         Location location = new Location(longitude, latitude);
