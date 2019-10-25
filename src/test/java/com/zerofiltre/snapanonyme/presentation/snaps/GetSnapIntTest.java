@@ -95,7 +95,7 @@ public class GetSnapIntTest {
         mvcResult = mvc.perform(MockMvcRequestBuilders.get("/public/snaps")
                 .param("longitude", String.valueOf(location.getLongitude()))
                 .param("latitude", String.valueOf(location.getLatitude()))
-                .param("distance", String.valueOf(DEFAULT_DISTANCE))
+                .param("distanceAsMiles", String.valueOf(DEFAULT_DISTANCE))
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk()).andReturn();
 
